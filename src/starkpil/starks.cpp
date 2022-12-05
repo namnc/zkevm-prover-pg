@@ -20,13 +20,15 @@ void Starks::genProof(void *pAddress, FRIProof &proof, Goldilocks::Element *publ
     Goldilocks::Element *p_cm2_n = &mem[starkInfo.mapOffsets.section[eSection::cm2_n]];
     Goldilocks::Element *p_cm3_2ns = &mem[starkInfo.mapOffsets.section[eSection::cm3_2ns]];
     Goldilocks::Element *p_cm3_n = &mem[starkInfo.mapOffsets.section[eSection::cm3_n]];
-    Goldilocks::Element *p_exps_withq_2ns = &mem[starkInfo.mapOffsets.section[eSection::exps_withq_2ns]];
-    Goldilocks::Element *p_exps_withq_n = &mem[starkInfo.mapOffsets.section[eSection::exps_withq_n]];
+    Goldilocks::Element *p_cm4_2ns = &mem[starkInfo.mapOffsets.section[eSection::cm4_2ns]];
+    Goldilocks::Element *q_cm4_2ns = &mem[starkInfo.mapOffsets.section[eSection::cm4_2ns]];
+    Goldilocks::Element *f_cm4_2ns = &mem[starkInfo.mapOffsets.section[eSection::cm4_2ns]];
 
     Polinomial root0(HASH_SIZE, 1);
     Polinomial root1(HASH_SIZE, 1);
     Polinomial root2(HASH_SIZE, 1);
     Polinomial root3(HASH_SIZE, 1);
+    
 
     MerkleTreeGL *treesGL[STARK_C12_A_NUM_TREES];
     treesGL[0] = new MerkleTreeGL(NExtended, starkInfo.mapSectionsN1.section[eSection::cm1_n] + starkInfo.mapSectionsN3.section[eSection::cm1_n] * FIELD_EXTENSION, p_cm1_2ns);
@@ -46,6 +48,11 @@ void Starks::genProof(void *pAddress, FRIProof &proof, Goldilocks::Element *publ
 
     TimerStopAndLog(STARK_STEP_1_LDE);
     TimerStart(STARK_STEP_1_MERKLETREE);
+
+    for (uint i = 0; i < starkInfo.nPublics; i++)
+    {
+        transcript.put(&publicInputs[i], 1);
+    }
 
     treesGL[0]->merkelize();
     treesGL[0]->getRoot(root0.address());
@@ -192,7 +199,7 @@ void Starks::genProof(void *pAddress, FRIProof &proof, Goldilocks::Element *publ
     TimerStopAndLog(STARK_STEP_4_CALCULATE_EXPS);
 
     TimerStart(STARK_STEP_4_LDE);
-    ntt.extendPol(p_exps_withq_2ns, p_exps_withq_n, NExtended, N, starkInfo.mapSectionsN.section[eSection::exps_withq_n], p_q_2ns);
+    //ntt.extendPol(p_exps_withq_2ns, p_exps_withq_n, NExtended, N, starkInfo.mapSectionsN.section[eSection::exps_withq_n], p_q_2ns);
     TimerStopAndLog(STARK_STEP_4_LDE);
 
     TimerStart(STARK_STEP_4_CALCULATE_EXPS_2NS);

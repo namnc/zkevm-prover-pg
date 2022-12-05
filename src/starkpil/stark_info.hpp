@@ -42,10 +42,11 @@ typedef enum
     cm1_2ns = 5,
     cm2_2ns = 6,
     cm3_2ns = 7,
-    exps_withq_2ns = 8,
-    exps_withoutq_2ns = 9,
-    q_2ns = 10,
-    eSectionMax = 11
+    cm4_2ns = 8,
+    exps_withq_2ns = 9,
+    exps_withoutq_2ns = 10,
+    q_2ns = 11,
+    eSectionMax = 12
 } eSection;
 
 eSection string2section (const string s);
