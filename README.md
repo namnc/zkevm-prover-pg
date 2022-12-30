@@ -39,6 +39,11 @@ To run the benchmark invoke the prover within the testvectors folder (https://gi
 ## Understanding the benchmarking result
 zkEVM can fit 2^23 actions (can be thought of as cpu cycles or rows of computation), and we would like to learn how complex is the contract call of our interest, i.e. how many actions are needed for the executed contract call. This gives us some ideas on optimizing contracts when using zkEVM.
 
+As an example
+```
+MainExecutor::execute() done lastStep=1444691 (17.2221%)
+```
+
 ## Generate test input for zkExecutor
 Look into the zkevm-testvectors repository (https://github.com/namnc/zkevm-testvectors-pg), we can generate test input from contracts:
 - Contracts in solidity should be put in the tools-calldata/evm/contracts folder: https://github.com/namnc/zkevm-testvectors-pg/tree/main/tools-calldata/evm/contracts
