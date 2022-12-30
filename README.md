@@ -83,6 +83,9 @@ The hard part (genesis states, account balances, generating roots, etc.) are alr
 
 The input_example_X.json is the expected input to be used with the zkEVM prover.
 
+## Additional logs
+We can enable additional logs in definitions: https://github.com/namnc/zkevm-prover-pg/blob/namnc-lite-prover-only-zkexecutor/src/config/definitions.hpp.
+
 # zkEVM Prover
 zkEVM proof generator
 ## General info
