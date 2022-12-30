@@ -1,3 +1,88 @@
+# Lite setup for testing contract calls
+## Enable only zkExecutor
+/*
+    Prover (available via GRPC service)
+    |\
+    | Executor (available via GRPC service)
+    | |\
+    | | Main State Machine
+    | | Byte4 State Machine
+    | | Binary State Machine
+    | | Memory State Machine
+    | | Mem Align State Machine
+    | | Arithmetic State Machine
+    | | Storage State Machine------\
+    | |                             |--> Poseidon G State Machine
+    | | Padding PG State Machine---/
+    | | Padding KK SM -> Padding KK Bit -> Nine To One SM -> Keccak-f SM -> Norm Gate 9 SM
+    |  \
+    |   State DB (available via GRPC service)
+    |   |\
+    |   | SMT
+    |    \
+    |     Database
+    |\
+    | Stark
+    |\
+    | Circom
+*/
+
+We can simply turn off (via commenting) the Stark and Circom related parts in main.cpp.
+An example is provided: main.cpp.lite. Replace the main.cpp with this file (and rename it to main.cpp).
+
+## Use example benchmark such as uniswapv2
+The input can be located in the performance folder (https://github.com/namnc/zkevm-prover-pg/tree/main/testvectors/performance), named uniswap_swaps_21.json (https://github.com/namnc/zkevm-prover-pg/blob/main/testvectors/performance/uniswap_swaps_21.json).
+To run the benchmark invoke the prover within the testvectors folder (https://github.com/namnc/zkevm-prover-pg/tree/main/testvectors) using the config file named config_runFile_FinalProof.json with input to the json file:
+```
+../zkProver -c config_runFile_FinalProof.json ./performance/uniswap_swaps_21.json
+```
+
+## Understanding the benchmarking result
+zkEVM can fit 2^23 actions (can be thought of as cpu cycles or rows of computation), and we would like to learn how complex is the contract call of our interest, i.e. how many actions are needed for the executed contract call. This gives us some ideas on optimizing contracts when using zkEVM.
+
+## Generate test input for zkExecutor
+Look into the zkevm-testvectors repository (https://github.com/namnc/zkevm-testvectors-pg), we can generate test input from contracts:
+- Contracts in solidity should be put in the tools-calldata/evm/contracts folder: https://github.com/namnc/zkevm-testvectors-pg/tree/main/tools-calldata/evm/contracts
+- Add or modify generate-test-vectors file --> example: gen-example.json. Take uniswapv2 contract calls for example, we can have a look at gen-uniswapv2.json (https://github.com/namnc/zkevm-testvectors-pg/blob/main/tools-calldata/evm/generate-test-vectors/gen-uniswapv2.json). We can invoke call by adding a tx (after deploying the contract):
+```
+      {
+        "from": "0x4d5Cf5032B2a844602278b01199ED191A86c93ff",
+        "to": "deploy",
+        "nonce": "0",
+        "value": "0",
+        "contractName": "UniswapV2Factory",
+        "params": [
+          "0x617b3a3528F9cDd6630fd3301B9c8911F7Bf063D"
+        ],
+        "gasLimit": 10000000,
+        "gasPrice": "1000000000",
+        "chainId": 1000
+      }
+```
+```
+    {
+        "from": "0x617b3a3528F9cDd6630fd3301B9c8911F7Bf063D",
+        "to": "contract",
+        "nonce": "1",
+        "value": "0",
+        "contractAddress": "0x85e844b762a271022b692cf99ce5c59ba0650ac8",
+        "abiName": "ERC20ABI",
+        "function": "mint",
+        "params": [
+          "0x4d5Cf5032B2a844602278b01199ED191A86c93ff",
+          "10000000000000000000"
+        ],
+        "gasLimit": 100000,
+        "gasPrice": "1000000000",
+        "chainId": 1000
+      }
+```
+The hard part (genesis states, account balances, generating roots, etc.) are already handled by the handy js files.
+- Run npx mocha gen-test-vectors-evm.js --vectors gen-example.json --> output: test-vectors/test-vector-data/example.json
+- Run npx mocha gen-inputs.js --vectors example --update --output --> output: test-vectors/inputs-executor/inputs/input_example_X.json (one input for each id in test-vector-data)
+
+The input_example_X.json is the expected input to be used with the zkEVM prover.
+
 # zkEVM Prover
 zkEVM proof generator
 ## General info
