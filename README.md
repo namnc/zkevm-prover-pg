@@ -1,6 +1,6 @@
 # Lite setup for testing contract calls
 ## Enable only zkExecutor
-/*
+```
     Prover (available via GRPC service)
     |\
     | Executor (available via GRPC service)
@@ -25,7 +25,7 @@
     | Stark
     |\
     | Circom
-*/
+```
 
 We can simply turn off (via commenting) the Stark and Circom related parts in main.cpp.
 An example is provided: main.cpp.lite. Replace the main.cpp with this file (and rename it to main.cpp).
