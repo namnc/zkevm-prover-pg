@@ -31,9 +31,9 @@ We would need to use the config flag runFileExecute in the config file.
 
 ## Use example benchmark such as uniswapv2
 The input can be located in the performance folder (https://github.com/namnc/zkevm-prover-pg/tree/main/testvectors/performance), named uniswap_swaps_21.json (https://github.com/namnc/zkevm-prover-pg/blob/main/testvectors/performance/uniswap_swaps_21.json).
-To run the benchmark invoke the prover within the testvectors folder (https://github.com/namnc/zkevm-prover-pg/tree/main/testvectors) using the modified config file (e.g. named config_runFile_Executor.json) with input to the json file:
+To run the benchmark invoke the prover within the testvectors folder (https://github.com/namnc/zkevm-prover-pg/tree/main/testvectors) using the modified config file (e.g. named config_runFile_Execute.json) with input to the json file:
 ```
-../build/zkProver -c config_runFile_Executor.json ./performance/uniswap_swaps_21.json
+../build/zkProver -c config_runFile_Execute.json ./performance/uniswap_swaps_21.json
 ```
 
 ## Understanding the benchmarking result
