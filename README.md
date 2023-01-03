@@ -27,18 +27,22 @@
     | Circom
 ```
 
-We can simply turn off (via commenting) the Stark and Circom related parts in main.cpp.
-An example is provided: main.cpp.lite. Replace the main.cpp with this file (and rename it to main.cpp).
+We would need to use the config flag runFileExecute in the config file.
 
 ## Use example benchmark such as uniswapv2
 The input can be located in the performance folder (https://github.com/namnc/zkevm-prover-pg/tree/main/testvectors/performance), named uniswap_swaps_21.json (https://github.com/namnc/zkevm-prover-pg/blob/main/testvectors/performance/uniswap_swaps_21.json).
-To run the benchmark invoke the prover within the testvectors folder (https://github.com/namnc/zkevm-prover-pg/tree/main/testvectors) using the config file named config_runFile_FinalProof.json with input to the json file:
+To run the benchmark invoke the prover within the testvectors folder (https://github.com/namnc/zkevm-prover-pg/tree/main/testvectors) using the modified config file (e.g. named config_runFile_Execute.json) with input to the json file:
 ```
-../zkProver -c config_runFile_FinalProof.json ./performance/uniswap_swaps_21.json
+../build/zkProver -c config_runFile_Execute.json ./performance/uniswap_swaps_21.json
 ```
 
 ## Understanding the benchmarking result
 zkEVM can fit 2^23 actions (can be thought of as cpu cycles or rows of computation), and we would like to learn how complex is the contract call of our interest, i.e. how many actions are needed for the executed contract call. This gives us some ideas on optimizing contracts when using zkEVM.
+
+As an example
+```
+MainExecutor::execute() done lastStep=1444691 (17.2221%)
+```
 
 ## Generate test input for zkExecutor
 Look into the zkevm-testvectors repository (https://github.com/namnc/zkevm-testvectors-pg), we can generate test input from contracts:
