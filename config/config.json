@@ -15,7 +15,7 @@
     "runFileGenFinalProof": false,
     "runFileProcessBatch": false,
     "runFileProcessBatchMultithread": false,
-    "runFileExecute", true,
+    "runFileExecute": true,
 
     "runKeccakScriptGenerator": false,
     "runKeccakTest": false,
@@ -60,8 +60,8 @@
     "mapConstPolsFile": false,
     "mapConstantsTreeFile": false,
 
-    "inputFile": "testvectors/finalProof/recursive2.zkin.proof_03.json",
-    "inputFile2": "testvectors/finalProof/recursive1.zkin.proof_1.json",
+    "inputFile": "testvectors/performance/uniswap_swaps_21.json",
+    "inputFile2": "testvectors/performance/uniswap_swaps_21.json",
 
     "rom": "config/scripts/rom.json",
     "keccakScriptFile": "config/scripts/keccak_script.json",
